@@ -58,37 +58,13 @@
     background-color: #ffd9d9 !important;
   }
 
- .explanation {
+  .explanation {
     margin-top: 0.8em;
     border-top: 1px solid #ddd;
     padding-top: 0.6em;
     display: none;
     background: #f8f8f8;
     border-radius: 6px;
-  }
-
-  .explanation .ex-line {
-    display: flex;
-    gap: 0.4em;
-    line-height: 1.6;
-  }
-
-  .explanation .ex-line.ex-empty {
-    min-height: 1em;
-  }
-
-  .explanation .ex-stars {
-    flex: 0 0 3ch;
-    text-align: right;
-  }
-
-  .explanation .ex-label {
-    flex: 0 0 2ch;
-    text-align: right;
-  }
-
-  .explanation .ex-text {
-    flex: 1 1 auto;
   }
 
   .reset-btn {
@@ -1559,58 +1535,10 @@ function shuffle(array) {
   return array;
 }
 
-function formatExplanation(html) {
-  const lines = html.split('<br>');
-
-  const formatted = lines.map(line => {
-    if (line.trim() === '') {
-      return '<div class="ex-line ex-empty"></div>';
-    }
-
-    const starLabelMatch = line.match(/^(★+)?[\s\u3000]*([a-e]\.)[\s\u3000]*(.*)$/i);
-    if (starLabelMatch) {
-      const stars = starLabelMatch[1] || '';
-      const label = starLabelMatch[2];
-      const text = starLabelMatch[3];
-      return `
-        <div class="ex-line">
-          <span class="ex-stars">${stars}</span>
-          <span class="ex-label">${label}</span>
-          <span class="ex-text">${text}</span>
-        </div>
-      `;
-    }
-
-    const starOnlyMatch = line.match(/^(★+)[\s\u3000]*(.*)$/);
-    if (starOnlyMatch) {
-      const stars = starOnlyMatch[1];
-      const text = starOnlyMatch[2];
-      return `
-        <div class="ex-line">
-          <span class="ex-stars">${stars}</span>
-          <span class="ex-label"></span>
-          <span class="ex-text">${text}</span>
-        </div>
-      `;
-    }
-
-    return `
-      <div class="ex-line">
-        <span class="ex-stars"></span>
-        <span class="ex-label"></span>
-        <span class="ex-text">${line}</span>
-      </div>
-    `;
-  });
-
-  return formatted.join('');
-}
-
 function render() {
   const app = document.getElementById('app');
   app.innerHTML = "";
   const doShuffle = document.getElementById('shuffle').checked;
-
 
   DATA.forEach(q => {
     const card = document.createElement('section');
@@ -1669,7 +1597,7 @@ function render() {
 
     const explanation = document.createElement('div');
     explanation.className = 'explanation';
-     explanation.innerHTML = formatExplanation(q.explanation_html);
+    explanation.innerHTML = q.explanation_html;
     card.appendChild(explanation);
 
     const reset = document.createElement('button');
